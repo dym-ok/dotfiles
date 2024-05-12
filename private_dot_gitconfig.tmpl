@@ -2,6 +2,7 @@
 	email = {{ .email }}
 	name = {{ .name }}
 	signingkey = {{ onepasswordRead "op://Private/GitHub-ssh/public key" }}
+  token = {{ onepasswordRead "op://Private/GitHub-PAT/password" }}
 [tag]
 	forceSignAnnotated = true
 [pull]
