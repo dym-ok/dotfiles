@@ -1,4 +1,7 @@
-channels: [conda-forge]
+channels:
+  - conda-forge
+  - nodefaults
 envs_dirs:
   - /Users/dym/mambaforge/envs
 changeps1: false
+channel_priority: strict
