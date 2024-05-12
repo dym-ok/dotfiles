@@ -217,3 +217,4 @@ eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
 alias cd="z"
 
+source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
