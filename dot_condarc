@@ -1,0 +1,4 @@
+channels: [conda-forge]
+envs_dirs:
+  - /Users/dym/mambaforge/envs
+changeps1: false
