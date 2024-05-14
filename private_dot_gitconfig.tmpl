@@ -8,15 +8,15 @@
 [pull]
 	rebase = true
 [core]
-	excludesfile = ~{{ .chezmoi.pathSeparator }}.gitignore
+	excludesfile = ~/.gitignore
 	editor = nvim
 [filter "lfs"]
-	smudge = {{ .chezmoi.config.git.command }}-lfs smudge -- %f
-	process = {{ .chezmoi.config.git.command }}-lfs filter-process
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 	required = true
-	clean = {{ .chezmoi.config.git.command }}-lfs clean -- %f
+	clean = git-lfs clean -- %f
 [alias]
-	a = {{ .chezmoi.command }}
+	a = apply
   b = branch
   c = commit
   cl = clone
@@ -33,15 +33,15 @@
 [init]
 	defaultBranch = main
 
-[includeIf "gitdir{{ .chezmoi.pathListSeparator }}~{{ .chezmoi.pathSeparator }}prj{{ .chezmoi.pathSeparator }}oss{{ .chezmoi.pathSeparator }}"]
-  path = ~{{ .chezmoi.pathSeparator }}.gitconfig-github
+[includeIf "gitdir{{ .chezmoi.pathListSeparator }}~/prj/oss/"]
+  path = ~/.gitconfig-github
 [{{ .chezmoi.config.gpg.command }}]
 	format = ssh
 [{{ .chezmoi.config.gpg.command }} "ssh"]
-	program = {{ .chezmoi.pathSeparator }}Applications{{ .chezmoi.pathSeparator }}1Password.app{{ .chezmoi.pathSeparator }}Contents{{ .chezmoi.pathSeparator }}MacOS{{ .chezmoi.pathSeparator }}{{ .chezmoi.config.onepassword.command }}-ssh-sign
+	program = /Applications/1Password.app/Contents/MacOS/{{ .chezmoi.config.onepassword.command }}-ssh-sign
 [commit]
 	gpgsign = true
 [push]
 	autoSetupRemote = true
-[url "https{{ .chezmoi.pathListSeparator }}{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }}dymok{{ .chezmoi.pathListSeparator }}{{ onepasswordRead "op://Private/GitHub-PAT/password" }}@github"]
-	insteadOf = https{{ .chezmoi.pathListSeparator }}{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }}github
+[url "https{{ .chezmoi.pathListSeparator }}//dymok{{ .chezmoi.pathListSeparator }}{{ onepasswordRead "op://Private/GitHub-PAT/password" }}@github"]
+	insteadOf = https{{ .chezmoi.pathListSeparator }}//github
