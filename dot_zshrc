@@ -227,6 +227,8 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
+eval "$(op completion zsh)"
 alias cd="z"
 
 source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+export OP_ACCOUNT=ol-dym.1password.com
