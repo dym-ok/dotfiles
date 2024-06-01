@@ -16,7 +16,7 @@ _install() {
   if [[ $(_isInstalled "${package}") == 0 ]]; then
     echo "${package} is already installed."
   else
-    apt install -y "${package}"
+    sudo apt install -y "${package}"
   fi
 }
 
@@ -36,11 +36,12 @@ _installMany() {
     return;
   fi
   printf "Packages not installed:\n%s\n" "${toInstall[@]}";
-  apt install -y "${toInstall[@]}"
+  sudo apt install -y "${toInstall[@]}"
 }
 
-packages=("direnv" "exa" "ripgrep" "tmux" "vim" "neovim" "xclip" "zsh" "zsh-autosuggestions" "zsh-completions" "zsh-fast-syntax-highlighting" "build-essential" "curl" "bzip2")
+packages=("direnv" "git" "ripgrep" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential" "curl" "bzip2")
 
-{{ if eq .chezmoi.os.osLike "debian" -}}
+{{ if eq .chezmoi.os "linux" -}}
+
 _installMany "${packages[@]}"
 {{ end -}}
