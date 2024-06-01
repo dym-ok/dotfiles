@@ -1,0 +1,46 @@
+#!/bin/bash -e
+_isInstalled() {
+  package="$1"
+  check="$(yay -Qs "${package}" | grep "local" | grep "${package} ")";
+  if [ -n "${check}" ]; then
+    echo 0;
+    return;
+  fi
+  echo 1;
+  return;
+}
+
+_install() {
+  package="$1"
+
+  if [[ $(_isInstalled "${package}") == 0 ]]; then
+    echo "${package} is already installed."
+  else
+    apt install -y "${package}"
+  fi
+}
+
+_installMany() {
+  toInstall=();
+
+  for pkg; do
+    if [[ $(_isInstalled "${pkg}") == 0 ]]; then
+      echo "${pkg} is already installed."
+      continue;
+    fi
+    toInstall+=("${pkg}");
+  done
+
+  if [[ "${toInstall[@]}" == "" ]]; then
+    echo "All packages are already installed";
+    return;
+  fi
+  printf "Packages not installed:\n%s\n" "${toInstall[@]}";
+  apt install -y "${toInstall[@]}"
+}
+
+packages=("direnv" "exa" "ripgrep" "tmux" "vim" "neovim" "xclip" "zsh" "zsh-autosuggestions" "zsh-completions" "zsh-fast-syntax-highlighting" "build-essential" "curl" "bzip2")
+
+{{ if eq .chezmoi.os.osLike "debian" -}}
+_installMany "${packages[@]}"
+{{ end -}}
