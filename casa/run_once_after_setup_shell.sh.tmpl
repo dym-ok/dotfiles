@@ -9,10 +9,22 @@ which starship || curl -sS https://starship.rs/install.sh | sh
 
 {{ if eq .chezmoi.os "linux" -}}
 
-FONT_DIR="$HOME/.local/share/fonts"
-mkdir -p $FONT_DIR
-curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.tar.xz | tar -xJ -C $FONT_DIR
-curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.tar.xz | tar -xJ -C $FONT_DIR
-curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTermSlab.tar.xz | tar -xJ -C $FONT_DIR
-fc-cache -fv
+  FONT_DIR="$HOME/.local/share/fonts"
+  mkdir -p $FONT_DIR
+  curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.tar.xz | tar -xJ -C $FONT_DIR
+  curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.tar.xz | tar -xJ -C $FONT_DIR
+  curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTermSlab.tar.xz | tar -xJ -C $FONT_DIR
+  fc-cache -fv
+
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/var/tmp/awscliv2.zip"
+  pushd /var/tmp/
+  unzip awscliv2.zip
+  sudo ./aws/install
+  popd
+
+{{ end -}}
+
+{{ if eq .chezmoi.os "darwin" -}}
+  curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "/var/tmp/AWSCLIV2.pkg"
+  sudo installer -pkg /var/tmp/AWSCLIV2.pkg -target /
 {{ end -}}
