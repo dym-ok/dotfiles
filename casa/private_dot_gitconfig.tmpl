@@ -35,12 +35,16 @@
 
 [includeIf "gitdir{{ .chezmoi.pathListSeparator }}~/prj/oss/"]
   path = ~/.gitconfig-github
-[{{ .chezmoi.config.gpg.command }}]
+
+{{ if eq .chezmoi.os "darwin" -}}
+[gpg]
 	format = ssh
-[{{ .chezmoi.config.gpg.command }} "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/{{ .chezmoi.config.onepassword.command }}-ssh-sign
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [commit]
 	gpgsign = true
+{{ end -}}
+
 [push]
 	autoSetupRemote = true
 [url "https{{ .chezmoi.pathListSeparator }}//dymok{{ .chezmoi.pathListSeparator }}{{ onepasswordRead "op://Private/GitHub-PAT/password" }}@github"]

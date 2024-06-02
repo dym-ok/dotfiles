@@ -1,5 +1,18 @@
 #!/bin/bash
 
 set -eufo pipefail
-micromamba create -n pynvim python=3.12
-micromamba install -n pynvim -y pynvim
+micromamba create -y -n pynvim python=3.12
+micromamba install -y -n pynvim pynvim
+
+which zoxide || curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+which starship || curl -sS https://starship.rs/install.sh | sh
+
+{{ if eq .chezmoi.os "linux" -}}
+
+FONT_DIR="$HOME/.local/share/fonts"
+mkdir -p $FONT_DIR
+curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.tar.xz | tar -xJ -C $FONT_DIR
+curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.tar.xz | tar -xJ -C $FONT_DIR
+curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTermSlab.tar.xz | tar -xJ -C $FONT_DIR
+fc-cache -fv
+{{ end -}}

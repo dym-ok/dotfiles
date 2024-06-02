@@ -1,14 +1,9 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
+
+export PATH="$HOME/bin:$HOME/.local/bin:./node_modules/.bin:/usr/local/opt/go/libexec/bin:${PATH}"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -69,19 +64,62 @@ DISABLE_AUTO_UPDATE="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+eval "$(zoxide init zsh)"
+eval "$(op completion zsh)"
+eval "$(direnv hook zsh)"
+eval "$(starship init zsh)"
+alias awsume=". awsume"
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias cd="z"
+alias clean_branches="git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep sorigin) | awk '{print $1}' | xargs git branch -d"
+alias got=git
+alias okta-renew="aws-sso-util logout && aws-sso-util login"
+alias pyenv-doctor='CFLAGS="-I$(brew --prefix openssl)/include" \
+LDFLAGS="-L$(brew --prefix openssl)/lib" \
+pyenv doctor'
+alias mark="open -a 'MarkText'"
+alias v=nvim
+alias vim=nvim
+alias poem="poetry run nvim"
+alias prj="cd ~/prj"
+alias zshconfig="v ~/.zshrc && exec $SHELL"
+
+
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
+{{ if eq .chezmoi.os "darwin" -}}
 plugins=(
   git aws macos brew npm yarn iterm2 sublime python poetry zoxide
 )
 
+function brew_find_pkg {
+    file_to_search="$@"
+
+    for package in $(brew list); do
+        brew ls $package | grep -E -q "/${file_to_search}$"
+        if [ $? -eq 0 ]; then
+            echo $package
+            break
+        fi
+    done
+}
+export PATH="$HOME/go/bin:${PATH}:/opt/homebrew/bin:/opt/homebrew/sbin"
+{{ end -}}
+
+{{ if eq .chezmoi.os "linux" -}}
+plugins=(
+  git aws npm yarn python poetry zoxide
+)
+{{ end -}}
+
 source $ZSH/oh-my-zsh.sh
 
-export PATH="$HOME/bin:$HOME/.local/bin:./node_modules/.bin:/usr/local/opt/go/libexec/bin:${PATH}"
-export PATH="$HOME/go/bin:${PATH}:/opt/homebrew/bin:/opt/homebrew/sbin"
 export PS1="${PS1}
 => "
 
@@ -96,11 +134,14 @@ function date2epoch() {
 
 ########## NodeJS ###########
 
+# fnm
+FNM_PATH="$HOME/.fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$HOME/.fnm:$PATH"
+  eval "`fnm env`"
+fi
 eval "$(fnm env)"
 
-########## Python ###########
-# eval "$(pyenv init -)"
-# eval "$(pyenv virtualenv-init -)"
 
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
@@ -110,18 +151,6 @@ export GPG_TTY=$(tty)
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
-alias clean_branches="git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep sorigin) | awk '{print $1}' | xargs git branch -d"
-alias got=git
-alias okta-renew="aws-sso-util logout && aws-sso-util login"
-alias pyenv-doctor='CFLAGS="-I$(brew --prefix openssl)/include" \
-LDFLAGS="-L$(brew --prefix openssl)/lib" \
-pyenv doctor'
-alias mark="open -a 'MarkText'"
-alias v=nvim
-alias vim=nvim
-alias poem="poetry run nvim"
-alias prj="cd ~/prj"
-alias zshconfig="v ~/.zshrc && exec $SHELL"
 
 ############## AWS ###############
 function aws_login() {
@@ -143,8 +172,6 @@ if [[ -d "$HOME/.okta/bin" && ":$PATH:" != *":$HOME/.okta/bin:"* ]]; then
     PATH="$HOME/.okta/bin:$PATH"
 fi
 
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 export EDITOR=nvim
 
 # export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
@@ -160,48 +187,25 @@ export HOMEBREW_CURLRC=1
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/dym/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/dym/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/Users/dym/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/dym/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/Users/dym/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "/Users/dym/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
-eval "$(direnv hook zsh)"
-eval "$(starship init zsh)"
-alias awsume=". awsume"
 
 function pdfcompress() {
   gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 $3 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$2 $1
 }
 
 export BUILDKIT_PROGRESS=plain
-export DENO_INSTALL="/Users/dym/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/dym/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
-export MAMBA_EXE='/Users/dym/mambaforge/bin/y/micromamba';
-export MAMBA_ROOT_PREFIX='/Users/dym/mambaforge/bin';
+export MAMBA_EXE="$HOME/.local/bin/micromamba";
+export MAMBA_ROOT_PREFIX="$HOME/micromamba";
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__mamba_setup"
@@ -210,25 +214,8 @@ else
 fi
 unset __mamba_setup
 # <<< mamba initialize <<<
-#
-function brew_find_pkg {
-    file_to_search="$@"
 
-    for package in $(brew list); do
-        brew ls $package | grep -E -q "/${file_to_search}$"
-        if [ $? -eq 0 ]; then
-            echo $package
-            break
-        fi
-    done
-}
-
-alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-eval "$(zoxide init zsh)"
-eval "$(op completion zsh)"
-alias cd="z"
 
 source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source "$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme"
 export OP_ACCOUNT=ol-dym.1password.com
