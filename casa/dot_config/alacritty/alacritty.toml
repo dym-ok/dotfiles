@@ -1,0 +1,24 @@
+import = [
+  "/home/dym/.npm/_npx/808b709e6234a442/node_modules/alacritty-themes/themes/Solarized-Dark.toml"
+]
+
+[shell]
+program = " /bin/zsh"
+
+[window.dimensions]
+columns = 135
+lines = 40
+
+[font]
+size = 15
+
+  [font.normal]
+  family = "Iosevka Nerd Font"
+
+  [font.bold]
+  family = "Iosevka Nerd Font"
+  style = "Extrabold"
+
+  [font.italic]
+  family = "Iosevka Nerd Font"
+  style = "Italic"
