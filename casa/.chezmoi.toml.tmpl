@@ -1,6 +1,8 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $name := promptStringOnce . "name" "Your name, signior" -}}
+{{- $home := promptStringOnce . "home" "home folder" -}}
 
 [data]
     email = {{ $email | quote }}
     name = {{ $name | quote }}
+    home = {{ $home | quote }}
