@@ -1,0 +1,25 @@
+Host *.dask.host
+  IdentityAgent SSH_AUTH_SOCK
+
+{{ if eq .chezmoi.os "linux" -}}
+Host *
+	IdentityAgent ~/.1password/agent.sock
+{{ end -}}
+
+{{ if eq .chezmoi.os "darwin" -}}
+Host *
+	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{ end -}}
+
+  
+Host boombox
+  HostName boom.box4.me
+  User dym
+
+Host homenas
+  HostName box.box4.me
+  Port 42122
+  User dymka
+
+Host pinky
+  User dymka
