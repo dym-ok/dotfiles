@@ -63,27 +63,6 @@ DISABLE_AUTO_UPDATE="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-eval "$(zoxide init zsh)"
-eval "$(op completion zsh)"
-eval "$(direnv hook zsh)"
-eval "$(starship init zsh)"
-alias awsume=". awsume"
-alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias cd="z"
-alias clean_branches="git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep sorigin) | awk '{print $1}' | xargs git branch -d"
-alias got=git
-alias okta-renew="aws-sso-util logout && aws-sso-util login"
-alias pyenv-doctor='CFLAGS="-I$(brew --prefix openssl)/include" \
-LDFLAGS="-L$(brew --prefix openssl)/lib" \
-pyenv doctor'
-alias mark="open -a 'MarkText'"
-alias v=nvim
-alias vim=nvim
-alias poem="poetry run nvim"
-alias prj="cd ~/prj"
-alias zshconfig="v ~/.zshrc && exec $SHELL"
 
 
 # Which plugins would you like to load?
@@ -218,3 +197,25 @@ unset __mamba_setup
 source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 source "$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme"
 export OP_ACCOUNT=ol-dym.1password.com
+
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+eval "$(zoxide init zsh)"
+eval "$(op completion zsh)"
+eval "$(direnv hook zsh)"
+eval "$(starship init zsh)"
+alias awsume=". awsume"
+alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias cd="z"
+alias clean_branches="git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep sorigin) | awk '{print $1}' | xargs git branch -d"
+alias got=git
+alias okta-renew="aws-sso-util logout && aws-sso-util login"
+alias pyenv-doctor='CFLAGS="-I$(brew --prefix openssl)/include" \
+LDFLAGS="-L$(brew --prefix openssl)/lib" \
+pyenv doctor'
+alias mark="open -a 'MarkText'"
+alias v=nvim
+alias vim=nvim
+alias poem="poetry run nvim"
+alias prj="cd ~/prj"
+alias zshconfig="chezmoi edit ~/.zshrc --apply && exec $SHELL"
