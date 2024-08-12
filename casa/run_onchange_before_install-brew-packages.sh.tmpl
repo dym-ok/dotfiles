@@ -2,88 +2,93 @@
 
 set -eufo pipefail
 
-{{ if eq .chezmoi.arch "arm64" -}}
-sudo softwareupdate --install-rosetta
+{{ if (and (eq .chezmoi.arch "arm64") (eq .chezmoi.os "darwin")) -}}
+if [ ! -f "/Library/Apple/System/Library/Receipts/com.apple.pkg.RosettaUpdateAuto.bom" ]; then
+  sudo softwareupdate --install-rosetta
+else
+  echo "Rosetta already installed"
+fi
 {{ end -}}
 
 {{ if eq .chezmoi.os "darwin" -}}
+  {{ $taps := list
+      "heroku/brew"
+      "homebrew/cask"
+      "homebrew/cask-fonts" -}}
 
-{{ $taps := list
-     "heroku/brew"
-     "homebrew/cask"
-     "homebrew/cask-fonts" -}}
+  {{ $brews := list
+      "actionlint"
+      "aws-iam-authenticator"
+      "aws-sso-util"
+      "bat"
+      "cmake"
+      "colordiff"
+      "direnv"
+      "docker-credential-helper"
+      "docker-credential-helper-ecr"
+      "fd"
+      "fnm"
+      "fzf"
+      "jq"
+      "gh"
+      "git"
+      "gnupg"
+      "lua"
+      "luajit"
+      "luajit-openresty"
+      "luarocks"
+      "minicom"
+      "neovim"
+      "neovide"
+      "ripgrep"
+      "protobuf"
+      "ruby"
+      "rust"
+      "speedtest"
+      "yq"
+      "zoxide"
+      "wget" -}}
 
-{{ $brews := list
-     "actionlint"
-     "aws-iam-authenticator"
-     "aws-sso-util"
-     "bat"
-     "cmake"
-     "colordiff"
-     "direnv"
-     "docker-credential-helper"
-     "docker-credential-helper-ecr"
-     "fd"
-     "fnm"
-     "fzf"
-     "jq"
-     "gh"
-     "git"
-     "gnupg"
-     "lua"
-    "luajit"
-    "luajit-openresty"
-    "luarocks"
-     "minicom"
-     "neovim"
-     "neovide"
-     "ripgrep"
-    "protobuf"
-    "ruby"
-    "rust"
-    "speedtest"
-    "yq"
-     "zoxide"
-     "wget" -}}
-{{ $casks := list
-    "1password-cli"
-    "1password"
-    "docker"
-    "font-inconsolata"
-    "font-iosevka-etoile"
-    "font-iosevka-nerd-font"
-    "google-chrome"
-    "iterm2"
-    "mark-text"
-    "openinterminal-lite"
-    "qlcolorcode"
-    "qlimagesize"
-    "qlmarkdown"
-    "qlstephen"
-    "qlvideo"
-    "quicklook-json"
-    "quicklookase"
-    "raycast"
-    "spotify"
-    "suspicious-package"
-     "tor-browser"
-     "skype"
-     "teamviewer"
-     "transmission"
-     "zoom"
-     "visual-studio-code"
-     "google-drive"
-     "telegram"
-     "whatsapp"
-     "discord"
-     "vlc" -}}
+  {{ $casks := list
+      "1password-cli"
+      "1password"
+      "docker"
+      "font-inconsolata"
+      "font-iosevka-etoile"
+      "font-iosevka-nerd-font"
+      "google-chrome"
+      "iterm2"
+      "mark-text"
+      "openinterminal-lite"
+      "qlcolorcode"
+      "qlimagesize"
+      "qlmarkdown"
+      "qlstephen"
+      "qlvideo"
+      "quicklook-json"
+      "quicklookase"
+      "raycast"
+      "spotify"
+      "suspicious-package"
+      "tor-browser"
+      "skype"
+      "teamviewer"
+      "transmission"
+      "zoom"
+      "visual-studio-code"
+      "google-drive"
+      "telegram"
+      "whatsapp"
+      "discord"
+      "vlc" -}}
 
-{{ $extensions := list
-     "vscodevim.vim"
-     "ms-python.python"
-     "ms-vscode.cpptools"
-     "redhat.vscode-yaml" -}}
+  {{ $extensions := list
+      "vscodevim.vim"
+      "ms-python.python"
+      "ms-vscode.cpptools"
+      "redhat.vscode-yaml" -}}
 
+if [ ! -f "$HOME/.brew-packages-installed" ]; then
 brew bundle --no-lock --file=/dev/stdin <<EOF
 {{ range ($taps | sortAlpha | uniq) -}}
 tap "{{ . }}"
@@ -98,4 +103,6 @@ cask "{{ . }}"
 vscode "{{ . }}"
 {{ end -}}
 EOF
+  touch $HOME/.brew-packages-installed
+fi
 {{ end -}}
