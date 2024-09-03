@@ -34,12 +34,12 @@ return {
         },
       })
       return {
-        -- snippet = {
-        --   expand = function(args)
-        --     vim.fn["vsnip#anonymous"](args.body)
-        --   end,
-        -- },
-        mapping = {
+        snippet = {
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete({
@@ -54,12 +54,12 @@ return {
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
           }),
-        },
+        }),
         sources = {
           -- { name = "copilot", group_index = 2 },
           { name = "cody", group_index = 2 },
           { name = "nvim_lsp", group_index = 3 },
-          { name = "vsnip", group_index = 3 },
+          -- { name = "vsnip", group_index = 3 },
           { name = "buffer", group_index = 3 },
           { name = "path", group_index = 3 },
           { name = "emoji", group_index = 3 },
