@@ -51,7 +51,9 @@ _installMany() {
   sudo apt install -y "${toInstall[@]}"
 }
 
-packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck" "python3-zombie-imp" "python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential" "curl" "bzip2")
+packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck" "python3-zombie-imp" \
+        "python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential" \
+        "curl" "bzip2" "luarocks")
 
 {{ if eq .chezmoi.os "linux" -}}
 

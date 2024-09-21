@@ -1,8 +1,10 @@
 #!/bin/bash
 
 set -eufo pipefail
-micromamba create -y -n pynvim python=3.12
-micromamba install -y -n pynvim pynvim
+micromamba run -n pynvim pip freeze \
+|| ( micromamba create -y -n pynvim python=3.12 \
+     && micromamba install -y -n pynvim pynvim
+     )
 
 which zoxide || curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 which starship || curl -sS https://starship.rs/install.sh | sh
@@ -16,15 +18,27 @@ which starship || curl -sS https://starship.rs/install.sh | sh
   curl -sSfL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTermSlab.tar.xz | tar -xJ -C $FONT_DIR
   fc-cache -fv
 
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/var/tmp/awscliv2.zip"
-  pushd /var/tmp/
-  unzip awscliv2.zip
-  sudo ./aws/install
-  popd
+  if [[ "$(type aws)" == "aws not found" ]]; then
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/var/tmp/awscliv2.zip"
+    pushd /var/tmp/
+    unzip awscliv2.zip
+    sudo ./aws/install
+    popd
+  fi
 
+
+# install lazygit
+  if [[ "$(type lazygit)" == "lazygit not found" ]]; then
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
+  fi
 {{ end -}}
 
 {{ if eq .chezmoi.os "darwin" -}}
-  curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "/var/tmp/AWSCLIV2.pkg"
-  sudo installer -pkg /var/tmp/AWSCLIV2.pkg -target /
+  if [[ "$(type aws)" == "aws not found" ]]; then
+    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "/var/tmp/AWSCLIV2.pkg"
+    sudo installer -pkg /var/tmp/AWSCLIV2.pkg -target /
+  fi
 {{ end -}}
