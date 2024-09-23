@@ -223,3 +223,7 @@ alias urldecode='python3 -c "import sys, urllib.parse as ul; \
     print(ul.unquote_plus(sys.argv[1]))"'
 alias urlencode='python3 -c "import sys, urllib.parse as ul; \
     print (ul.quote_plus(sys.argv[1]))"'
+
+## API KEYS
+#export ANTHROPIC_API_KEY='{{ onepasswordRead "op://Private/Anthropic/credential" }}'
+export OPENAI_API_KEY='{{ onepasswordRead "op://Private/Open-AI-key/credential" }}'
