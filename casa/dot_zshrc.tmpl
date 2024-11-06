@@ -73,7 +73,7 @@ DISABLE_AUTO_UPDATE="true"
 
 {{ if eq .chezmoi.os "darwin" -}}
 plugins=(
-  git aws macos brew npm yarn iterm2 sublime python poetry zoxide
+  1password git aws docker eza macos brew gh npm yarn iterm2 jira sublime python poetry pre-commit thefuck zoxide
 )
 
 function brew_find_pkg {
@@ -223,6 +223,9 @@ alias urldecode='python3 -c "import sys, urllib.parse as ul; \
     print(ul.unquote_plus(sys.argv[1]))"'
 alias urlencode='python3 -c "import sys, urllib.parse as ul; \
     print (ul.quote_plus(sys.argv[1]))"'
+
+
+export JIRA_URL=https://smg-re.atlassian.net/
 
 ## API KEYS
 #export ANTHROPIC_API_KEY='{{ onepasswordRead "op://Private/Anthropic/credential" }}'
