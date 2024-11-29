@@ -206,6 +206,7 @@ eval "$(direnv hook zsh)"
 eval "$(starship init zsh)"
 alias awsume=". awsume"
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias ll="eza --color=always --long --git --icons=always"
 alias cd="z"
 alias clean_branches="git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep sorigin) | awk '{print $1}' | xargs git branch -d"
 alias got=git
