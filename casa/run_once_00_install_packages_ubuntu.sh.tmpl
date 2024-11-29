@@ -31,6 +31,10 @@ _install() {
   fi
 }
 
+_postInstall() {
+  ln -s $(which fdfind) ~/.local/bin/fd
+}
+
 _installMany() {
   toInstall=();
 
@@ -49,11 +53,13 @@ _installMany() {
   printf "Packages not installed:\n%s\n" "${toInstall[@]}";
   _registerRepos
   sudo apt install -y "${toInstall[@]}"
+
+  _postInstall
 }
 
 packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck" "python3-zombie-imp" \
         "python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential" \
-        "curl" "bzip2" "luarocks")
+        "curl" "bzip2" "luarocks" "fd-find")
 
 {{ if eq .chezmoi.os "linux" -}}
 
