@@ -32,7 +32,9 @@ _install() {
 }
 
 _postInstall() {
-	ln -s $(which fdfind) ~/.local/bin/fd
+	if [[ ! -f ~/.local/bin/fd ]]; then
+		ln -s $(which fdfind) ~/.local/bin/fd
+	fi
 }
 
 _installMany() {
