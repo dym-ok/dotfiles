@@ -224,7 +224,7 @@ alias urldecode='python3 -c "import sys, urllib.parse as ul; \
     print(ul.unquote_plus(sys.argv[1]))"'
 alias urlencode='python3 -c "import sys, urllib.parse as ul; \
     print (ul.quote_plus(sys.argv[1]))"'
-alias fix-poetry-lock="git restore --staged poetry.lock; git co poetry.lock; poetry lock --no-update && git add poetry.lock && git rebase --continue"
+alias fix-poetry-lock="git restore --staged poetry.lock; git co poetry.lock; poetry lock && git add poetry.lock && git rebase --continue"
 
 
 export JIRA_URL=https://smg-re.atlassian.net/
