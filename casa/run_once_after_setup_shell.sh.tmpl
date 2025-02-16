@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eufo pipefail
+set -efo pipefail
 micromamba run -n pynvim pip freeze ||
 	(
 		micromamba create -y -n pynvim python=3.12 &&
