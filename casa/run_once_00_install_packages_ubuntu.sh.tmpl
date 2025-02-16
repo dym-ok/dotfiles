@@ -1,67 +1,72 @@
 #!/bin/bash -e
 _isInstalled() {
-  package="$1"
-  check="$(yay -Qs "${package}" | grep "local" | grep "${package} ")";
-  if [ -n "${check}" ]; then
-    echo 0;
-    return;
-  fi
-  echo 1;
-  return;
+	package="$1"
+	check="$(yay -Qs "${package}" | grep "local" | grep "${package} ")"
+	if [ -n "${check}" ]; then
+		echo 0
+		return
+	fi
+	echo 1
+	return
 }
 
 _registerRepos() {
-  sudo mkdir -p /etc/apt/keyrings
-  sudo apt update && sudo apt install -y gpg
-	wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc \
-  | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-	echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" \
-  | sudo tee /etc/apt/sources.list.d/gierens.list
+	sudo mkdir -p /etc/apt/keyrings
+	sudo apt update && sudo apt install -y gpg
+	wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc |
+		sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+	echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" |
+		sudo tee /etc/apt/sources.list.d/gierens.list
 	sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
 	sudo apt update
 }
 
 _install() {
-  package="$1"
+	package="$1"
 
-  if [[ $(_isInstalled "${package}") == 0 ]]; then
-    echo "${package} is already installed."
-  else
-    sudo apt install -y "${package}"
-  fi
+	if [[ $(_isInstalled "${package}") == 0 ]]; then
+		echo "${package} is already installed."
+	else
+		sudo apt install -y "${package}"
+	fi
 }
 
 _postInstall() {
-  ln -s $(which fdfind) ~/.local/bin/fd
+	ln -s $(which fdfind) ~/.local/bin/fd
 }
 
 _installMany() {
-  toInstall=();
+	toInstall=()
 
-  for pkg; do
-    if [[ $(_isInstalled "${pkg}") == 0 ]]; then
-      echo "${pkg} is already installed."
-      continue;
-    fi
-    toInstall+=("${pkg}");
-  done
+	for pkg; do
+		if [[ $(_isInstalled "${pkg}") == 0 ]]; then
+			echo "${pkg} is already installed."
+			continue
+		fi
+		toInstall+=("${pkg}")
+	done
 
-  if [[ "${toInstall[@]}" == "" ]]; then
-    echo "All packages are already installed";
-    return;
-  fi
-  printf "Packages not installed:\n%s\n" "${toInstall[@]}";
-  _registerRepos
-  sudo apt install -y "${toInstall[@]}"
+	if [[ "${toInstall[@]}" == "" ]]; then
+		echo "All packages are already installed"
+		return
+	fi
+	printf "Packages not installed:\n%s\n" "${toInstall[@]}"
+	_registerRepos
+	sudo apt install -y "${toInstall[@]}"
 
-  _postInstall
+	_postInstall
 }
 
-packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck" "python3-zombie-imp" \
-        "python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential" \
-        "curl" "bzip2" "luarocks" "fd-find")
+packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck"
+	"python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential"
+	"curl" "bzip2" "luarocks" "fd-find")
 
 {{ if eq .chezmoi.os "linux" -}}
 
 _installMany "${packages[@]}"
+source /etc/lsb-release
+if [["$DISTRIB_CODENAME" == "noble"]]; then
+	_installMany "python3-zombie-imp"
+fi
+
 {{ end -}}
