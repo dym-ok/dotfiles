@@ -193,6 +193,7 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 source "$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme"
