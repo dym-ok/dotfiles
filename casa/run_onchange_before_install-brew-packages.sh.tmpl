@@ -13,8 +13,7 @@ fi
 {{ if eq .chezmoi.os "darwin" -}}
   {{ $taps := list
       "heroku/brew"
-      "homebrew/cask"
-      "homebrew/cask-fonts" -}}
+      "homebrew/cask" -}}
 
   {{ $brews := list
       "actionlint"
@@ -45,7 +44,7 @@ fi
       "protobuf"
       "ruby"
       "rust"
-      "speedtest"
+      "speedtest-cli"
       "yq"
       "zoxide"
       "wget" -}}
@@ -62,7 +61,6 @@ fi
       "mark-text"
       "openinterminal-lite"
       "qlcolorcode"
-      "qlimagesize"
       "qlmarkdown"
       "qlstephen"
       "qlvideo"
