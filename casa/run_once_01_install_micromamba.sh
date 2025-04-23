@@ -7,6 +7,8 @@ else
 	echo "micromamba already installed"
 fi
 
+micromamba install -y pipx
+
 if [[ "$(type poetry)" == "poetry not found" ]]; then
 	echo "installing poetry"
 	pipx install poetry
