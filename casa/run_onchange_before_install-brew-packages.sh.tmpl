@@ -11,9 +11,7 @@ fi
 {{ end -}}
 
 {{ if eq .chezmoi.os "darwin" -}}
-  {{ $taps := list
-      "heroku/brew"
-      "homebrew/cask" -}}
+  
 
   {{ $brews := list
       "actionlint"
@@ -89,9 +87,7 @@ fi
 
 if [ ! -f "$HOME/.brew-packages-installed" ]; then
 brew bundle --file=/dev/stdin <<EOF
-{{ range ($taps | sortAlpha | uniq) -}}
-tap "{{ . }}"
-{{ end -}}
+
 {{ range ($brews | sortAlpha | uniq) -}}
 brew "{{ . }}"
 {{ end -}}
