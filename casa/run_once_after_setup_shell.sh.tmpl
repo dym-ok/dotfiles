@@ -36,9 +36,14 @@ if [[ "$(type lazygit)" == "lazygit not found" ]]; then
 	tar xf lazygit.tar.gz lazygit
 	sudo install lazygit /usr/local/bin
 fi
-{{ end -}}
 
-{{ if eq .chezmoi.os "darwin" -}}
+# install rust-analyzer
+if [[ "$(type rust-analyzer)" == "rust-analyzer not found" ]]; then
+	rustup component add rust-analyzer
+fi
+
+{{ else if eq .chezmoi.os "darwin" -}}
+
 if [[ "$(type aws)" == "aws not found" ]]; then
 	curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "/var/tmp/AWSCLIV2.pkg"
 	sudo installer -pkg /var/tmp/AWSCLIV2.pkg -target /
