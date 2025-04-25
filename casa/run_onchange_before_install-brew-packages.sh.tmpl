@@ -12,8 +12,7 @@ fi
 
 {{ if eq .chezmoi.os "darwin" -}}
   {{ $taps := list
-      "heroku/brew"
-      "homebrew/cask" -}}
+      "teamookla/speedtest" -}}
 
   {{ $brews := list
       "actionlint"
@@ -48,7 +47,7 @@ fi
       "rust-analyzer"
       "ruby"
       "rust"
-      "speedtest-cli"
+      "speedtest"
       "thefuck"
       "yq"
       "zoxide"
