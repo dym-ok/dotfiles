@@ -2,12 +2,6 @@
 {{- $name := promptStringOnce . "name" "Your name, signior" -}}
 {{- $home := promptStringOnce . "home" "home folder" -}}
 
-{{- if eq .chezmoi.os "darwin" }}
-sourceDir = "/Users/{{ $home }}/.local/share/chezmoi/casa"
-{{- else if eq .chezmoi.os "linux" }}
-sourceDir = "/home/{{ $home }}/.local/share/chezmoi/casa"
-{{- end }}
-
 [data]
 email = {{ $email | quote }}
 name = {{ $name | quote }}
