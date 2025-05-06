@@ -697,6 +697,12 @@
                         "description": "Change Backslash (\\) to Enter (use fn + \\ for default behavior)",
                         "manipulators": [
                             {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "type": "device_if"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "backslash",
                                     "modifiers": { "optional": ["shift"] }
@@ -750,6 +756,14 @@
                             "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
                         }
                     ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 50475,
+                        "vendor_id": 1133
+                    },
+                    "ignore": true
                 }
             ],
             "name": "dymka",
