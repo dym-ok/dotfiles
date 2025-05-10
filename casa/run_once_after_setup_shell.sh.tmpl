@@ -49,3 +49,7 @@ if [[ "$(type aws)" == "aws not found" ]]; then
 	sudo installer -pkg /var/tmp/AWSCLIV2.pkg -target /
 fi
 {{ end -}}
+
+if [[ "$(type kitty)" == kitty not found]]; then
+	curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+fi
