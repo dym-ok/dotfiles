@@ -46,7 +46,7 @@ return {
           ["<C-Space>"] = cmp.mapping.complete({
             config = {
               sources = {
-                { name = "cody" },
+                { name = "copilot" },
               },
             },
           }),
@@ -57,8 +57,7 @@ return {
           }),
         }),
         sources = {
-          -- { name = "copilot", group_index = 2 },
-          { name = "cody", group_index = 2 },
+          { name = "copilot", group_index = 2 },
           { name = "nvim_lsp", group_index = 3 },
           { name = "vsnip", group_index = 3 },
           { name = "buffer", group_index = 3 },
