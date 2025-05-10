@@ -1,0 +1,41 @@
+export PATH="$HOME/bin:$HOME/.local/bin:./node_modules/.bin:/usr/local/opt/go/libexec/bin:${PATH}"
+
+export ZSH="$HOME/.oh-my-zsh"
+
+{{ if eq .chezmoi.os "darwin" -}}
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="$HOME/go/bin:${PATH}:/opt/homebrew/bin:/opt/homebrew/sbin"
+export HOMEBREW_CURLRC=1
+
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+{{ end -}}
+
+# fnm
+FNM_PATH="$HOME/.fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$HOME/.fnm:$PATH"
+  eval "`fnm env`"
+fi
+eval "$(fnm env)"
+
+############## AWS ###############
+function aws_login() {
+  login_cmd="python3 $HOME/inject_aws_keys.py $1"
+  eval "\$($login_cmd)"
+}
+
+function aws_logout() {
+  for env_var in $(env | fgrep AWS_ | sed 's/=.*//g')
+  do
+    unset $env_var
+  done
+}
+export OP_ACCOUNT=ol-dym.1password.com
+export JIRA_URL=https://smg-re.atlassian.net/
+
+## API KEYS
+#export ANTHROPIC_API_KEY='{{ onepasswordRead "op://Private/Anthropic/credential" }}'
+export OPENAI_API_KEY='{{ onepasswordRead "op://Private/Open-AI-key/credential" }}'
+export DEEPSEEK_API_KEY='{{ onepasswordRead "op://Private/Deepseek API KEY/credential" }}'
