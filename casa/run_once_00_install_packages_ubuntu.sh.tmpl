@@ -43,7 +43,7 @@ _installMany() {
 	for pkg; do
 		if [[ $(_isInstalled "${pkg}") == 0 ]]; then
 			echo "${pkg} is already installed."
-			continue
+			continueÖ
 		fi
 		toInstall+=("${pkg}")
 	done
@@ -63,7 +63,7 @@ packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck"
 	"python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential"
 	"curl" "bzip2" "luarocks" "fd-find")
 
-{{ if eq .chezmoi.os "linux" -}}
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.idLike "debian")  -}}
 
 _installMany "${packages[@]}"
 source /etc/lsb-release

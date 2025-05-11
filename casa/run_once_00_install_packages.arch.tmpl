@@ -1,0 +1,63 @@
+#!/bin/bash -e
+
+_isInstalled() {
+    pkg="$1"
+    if pacman -Qi "${pkg}" &> /dev/null; then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+_install() {
+    pkg="$1"
+    if [[ $(_isInstalled "${pkg}") -eq 0 ]]; then
+        echo "${pkg} is already installed."
+    else
+        sudo pacman -Syu --noconfirm "${pkg}"
+    fi
+}
+
+_installMany() {
+    toInstall=()
+    for pkg in "$@"; do
+        if [[ $(_isInstalled "${pkg}") -eq 0 ]]; then
+            echo "${pkg} is already installed."
+        else
+            toInstall+=("${pkg}")
+        fi
+    done
+
+    if [[ ${#toInstall[@]} -eq 0 ]]; then
+        echo "All packages are already installed."
+        return
+    fi
+
+    printf "Packages to install:\n%s\n" "${toInstall[@]}"
+    sudo pacman -Syu --noconfirm "${toInstall[@]}"
+}
+
+# List of packages (Arch naming conventions)
+packages=(
+    direnv
+    eza
+    git
+    fzf
+    ripgrep
+    thefuck
+    python-pip
+    tmux
+    vim
+    neovim
+    xclip
+    zsh
+    base-devel
+    curl
+    bzip2
+    luarocks
+    fd
+)
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") }}
+_installMany "${packages[@]}"
+{{ end }}
