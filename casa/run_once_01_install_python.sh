@@ -3,6 +3,7 @@ if [[ "$(type micromamba)" == "micromamba not found" ]]; then
 	echo "installing micromamba"
 	"${SHELL}" <(curl -L micro.mamba.pm/install.sh)
 	micromamba shell init -s zsh -p "$HOME/micromamba"
+
 else
 	echo "micromamba already installed"
 fi
@@ -10,6 +11,7 @@ fi
 if [[ "$(type poetry)" == "poetry not found" ]]; then
 	echo "installing poetry"
 	pipx install poetry
+
 else
 	echo "poetry already installed"
 fi
@@ -22,4 +24,12 @@ if [[ "$(type poe)" == "poe not found" ]]; then
 
 else
 	echo "poe already installed"
+fi
+
+if [[ "$(type uv)" == "uv not found" ]]; then
+  echo "installing uv"
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+
+else
+  echo "uv already installed"
 fi
