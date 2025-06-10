@@ -1,13 +1,11 @@
 #!/bin/bash -e
 _isInstalled() {
-	package="$1"
-	check="$(yay -Qs "${package}" | grep "local" | grep "${package} ")"
-	if [ -n "${check}" ]; then
-		echo 0
-		return
-	fi
-	echo 1
-	return
+  local pkg="$1"
+  if dpkg -s "$pkg" &> /dev/null; then
+    echo 0
+  else
+    echo 1
+  fi
 }
 
 _registerRepos() {
@@ -20,8 +18,7 @@ _registerRepos() {
 	sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
   curl -sS https://downloads.1password.com/linux/keys/1password.asc \
     | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-  echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] \
-    https://downloads.1password.com/linux/debian/amd64 stable main' \
+  echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' \
     | sudo tee /etc/apt/sources.list.d/1password.list
 	sudo apt update
 }
@@ -48,7 +45,7 @@ _installMany() {
 	for pkg; do
 		if [[ $(_isInstalled "${pkg}") == 0 ]]; then
 			echo "${pkg} is already installed."
-			continueÖ
+			continue
 		fi
 		toInstall+=("${pkg}")
 	done
@@ -72,7 +69,7 @@ packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck"
 
 _installMany "${packages[@]}"
 source /etc/lsb-release
-if [["$DISTRIB_CODENAME" == "noble"]]; then
+if [[ "$DISTRIB_CODENAME" == "noble" ]]; then
 	_installMany "python3-zombie-imp"
 fi
 
