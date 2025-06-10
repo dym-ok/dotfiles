@@ -8,8 +8,12 @@ if [[ ! -d "$HOME/.uvenv/pynvim" ]]; then
   deactivate
 fi
 
-which zoxide || curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-which starship || curl -sS https://starship.rs/install.sh | sh
+if [[ "$(type zoxide)" == "zoxide not found" ]]; then
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+if [[ "$(type starship)" == "starship not found" ]]; then
+  curl -sS https://starship.rs/install.sh | sh
+fi
 
 {{ if eq .chezmoi.os "linux" -}}
 
@@ -38,11 +42,6 @@ if [[ "$(type lazygit)" == "lazygit not found" ]]; then
 	sudo install lazygit /usr/local/bin
 fi
 
-# install rust-analyzer
-if [[ "$(type rust-analyzer)" == "rust-analyzer not found" ]]; then
-	rustup component add rust-analyzer
-fi
-
 {{ else if eq .chezmoi.os "darwin" -}}
 
 defaults write NSGlobalDomain KeyRepeat -int 1
@@ -63,4 +62,8 @@ fi
 
 if [[ "$(type rustup)" == "rustup not found" ]]; then
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
+# install rust-analyzer
+if [[ "$(type rust-analyzer)" == "rust-analyzer not found" ]]; then
+	rustup component add rust-analyzer
 fi
