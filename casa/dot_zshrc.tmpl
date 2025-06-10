@@ -197,12 +197,12 @@ alias copilot='GITHUB_TOKEN="" gh copilot suggest'
 
 {{ if eq .chezmoi.os "darwin" -}}
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/{{ .home }}/.local/google-cloud-sdk/path.zsh.inc' ]; then 
-  . '/Users/{{ .home }}/.local/google-cloud-sdk/path.zsh.inc'; 
+if [ -f '{{ .home }}/.local/google-cloud-sdk/path.zsh.inc' ]; then 
+  . '{{ .home }}/.local/google-cloud-sdk/path.zsh.inc'; 
 fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users{{ .home }}/.local/google-cloud-sdk/completion.zsh.inc' ]; then 
-  . '/Users{{ .home }}/.local/google-cloud-sdk/completion.zsh.inc'; 
+if [ -f '{{ .home }}/.local/google-cloud-sdk/completion.zsh.inc' ]; then 
+  . '{{ .home }}/.local/google-cloud-sdk/completion.zsh.inc'; 
 fi
 {{ end -}}
