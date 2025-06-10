@@ -2,7 +2,7 @@
 
 set -efo pipefail
 if [[ ! -d "$HOME/.uvenv/pynvim" ]]; then
-  uv venv "$HOME/.uvenv/pynvim" --python=python3.12 --force
+  uv venv "$HOME/.uvenv/pynvim" --python 3.12
   source "$HOME/.uvenv/pynvim/bin/activate"
   uv pip install pip pynvim
   deactivate
