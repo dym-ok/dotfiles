@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
 
 set -efo pipefail
-if [[ ! -d "$HOME/.uvenv/pynvim"]]
+if [[ ! -d "$HOME/.uvenv/pynvim"]]; then
   uv venv "$HOME/.uvenv/pynvim" --python=python3.12 --force
   source "$HOME/.uvenv/pynvim/bin/activate"
   uv pip install pip pynvim
   deactivate
 fi
+
 which zoxide || curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 which starship || curl -sS https://starship.rs/install.sh | sh
 
