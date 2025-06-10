@@ -29,6 +29,9 @@ fi
 if [[ "$(type uv)" == "uv not found" ]]; then
   echo "installing uv"
   curl -LsSf https://astral.sh/uv/install.sh | sh
+  if [[! -d "$HOME/.uvenv" ]]; then
+    mldir -p "$HOME/.uvenv"
+  fi
 
 else
   echo "uv already installed"
