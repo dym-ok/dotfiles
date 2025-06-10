@@ -66,7 +66,7 @@ _installMany() {
 
 packages=("direnv" "eza" "git" "fzf" "ripgrep" "thefuck"
 	"python3-pip" "tmux" "vim" "neovim" "xclip" "zsh" "build-essential"
-	"curl" "bzip2" "luarocks" "fd-find" "pipx" "1password")
+	"curl" "bzip2" "luarocks" "fd-find" "pipx" "1password" "rustup")
 
 {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.idLike "debian")  -}}
 
