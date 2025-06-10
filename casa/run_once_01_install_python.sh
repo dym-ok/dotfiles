@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+set -efo pipefail
+
 if [[ "$(type micromamba)" == "micromamba not found" ]]; then
 	echo "installing micromamba"
 	"${SHELL}" <(curl -L micro.mamba.pm/install.sh)
