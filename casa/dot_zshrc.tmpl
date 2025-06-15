@@ -183,6 +183,7 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; \
 alias fix-poetry-lock="git restore --staged poetry.lock; git co poetry.lock; poetry lock && git add poetry.lock && git rebase --continue"
 alias docker=podman
 alias copilot='GITHUB_TOKEN="" gh copilot suggest'
+alias gdiff="git diff --color-words --word-diff-regex='[^[:space:]]+'"
 
 
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
