@@ -36,6 +36,8 @@ export OP_ACCOUNT=ol-dym.1password.com
 export JIRA_URL=https://smg-re.atlassian.net/
 
 ## API KEYS
-#export ANTHROPIC_API_KEY='{{ onepasswordRead "op://Private/Anthropic/credential" }}'
+export ANTHROPIC_API_KEY='{{ onepasswordRead "op://Private/Anthropic/credential" }}'
 export OPENAI_API_KEY='{{ onepasswordRead "op://Private/Open-AI-key/credential" }}'
 export DEEPSEEK_API_KEY='{{ onepasswordRead "op://Private/Deepseek API KEY/credential" }}'
+export PERPLEXITY_API_KEY='{{ onepasswordRead "op://Private/Perplexity API KEY/credential" }}'
+export GITHUB_PERSONAL_ACCESS_TOKEN='{{ onepasswordRead "op://Private/GitHub-PAT/password" }}'
