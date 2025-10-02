@@ -156,7 +156,6 @@ source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 eval $(thefuck --alias)
 eval $(thefuck --alias fk)
-eval "$(zoxide init zsh)"
 eval "$(op completion zsh)"
 eval "$(direnv hook zsh)"
 eval "$(starship init zsh)"
@@ -199,3 +198,4 @@ if [ -f '{{ .home }}/.local/google-cloud-sdk/completion.zsh.inc' ]; then
   . '{{ .home }}/.local/google-cloud-sdk/completion.zsh.inc'; 
 fi
 {{ end -}}
+eval "$(zoxide init zsh)"
