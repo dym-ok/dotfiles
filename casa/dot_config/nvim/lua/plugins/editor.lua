@@ -1,6 +1,4 @@
--- since this is just an example spec, don't actually load anything here and return an empty spec
--- stylua: ignore
-if true then return {} end
+-- Custom plugin configurations and overrides for LazyVim
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --
@@ -54,44 +52,7 @@ return {
     },
   },
 
-  -- add tsserver and setup with typescript.nvim instead of lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "jose-elias-alvarez/typescript.nvim",
-      init = function()
-        require("lazyvim.util").lsp.on_attach(function(_, buffer)
-          -- stylua: ignore
-          vim.keymap.set( "n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
-          vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File", buffer = buffer })
-        end)
-      end,
-    },
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- tsserver will be automatically installed with mason and loaded with lspconfig
-        tsserver = {},
-      },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
-    },
-  },
-
-  -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
-  -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
-  { import = "lazyvim.plugins.extras.lang.typescript" },
+  -- TypeScript support is already enabled via LazyVim extras in lazyvim.json
 
   -- add more treesitter parsers
   {
@@ -150,21 +111,53 @@ return {
     end,
   },
 
-  -- use mini.starter instead of alpha
-  { import = "lazyvim.plugins.extras.ui.mini-starter" },
-
-  -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
-  { import = "lazyvim.plugins.extras.lang.json" },
-
   -- add any tools you want to have installed below
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = {
       ensure_installed = {
         "stylua",
         "shellcheck",
         "shfmt",
-        "flake8",
+        "ruff", -- Python formatter and linter
+        "prettierd", -- Fast prettier daemon
+        "prettier", -- Fallback formatter
+      },
+    },
+  },
+
+  -- Configure Neo-tree to handle terminal buffers properly
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+          hide_gitignored = false,
+          never_show = {
+            ".DS_Store",
+            "thumbs.db",
+          },
+        },
+      },
+      buffers = {
+        follow_current_file = {
+          enabled = true,
+        },
+        -- Filter out terminal buffers
+        show_unloaded = false,
+      },
+      event_handlers = {
+        {
+          event = "file_opened",
+          handler = function(file_path)
+            -- Don't try to handle terminal buffers
+            if string.match(file_path, "^term:") then
+              return
+            end
+            require("neo-tree.command").execute({ action = "close" })
+          end,
+        },
       },
     },
   },
@@ -238,15 +231,18 @@ return {
     ---@type conform.setupOpts
     opts = {
       formatters_by_ft = {
-        lua = { "stlyua" },
+        lua = { "stylua" },
         python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
+        typescript = { "prettierd", "prettier", stop_after_first = true },
+        javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+        typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+        json = { "prettierd", "prettier", stop_after_first = true },
         markdown = { "prettierd", "prettier", stop_after_first = true },
       },
       default_format_opts = {
         lsp_format = "fallback",
       },
-      format_on_save = { timeout_ms = 500 },
     },
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
