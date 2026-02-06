@@ -2,19 +2,23 @@
 	email = {{ .email }}
 	name = {{ .name }}
 	signingkey = {{ onepasswordRead "op://Private/GitHub-ssh/public key" }}
-  token = {{ onepasswordRead "op://Private/GitHub-PAT/password" }}
+
 [tag]
 	forceSignAnnotated = true
+
 [pull]
 	rebase = true
+
 [core]
 	excludesfile = ~/.gitignore
 	editor = nvim
+
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+
 [alias]
 	a = apply
   b = branch
@@ -37,15 +41,20 @@
   path = ~/.gitconfig-github
 
 {{ if eq .chezmoi.os "darwin" -}}
+
 [gpg]
 	format = ssh
+
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedSignersFile = {{ .home }}/.config/git/allowed_signers
+
 [commit]
 	gpgsign = true
 {{ end -}}
 
 [push]
 	autoSetupRemote = true
+
 [url "https{{ .chezmoi.pathListSeparator }}//dymok{{ .chezmoi.pathListSeparator }}{{ onepasswordRead "op://Private/GitHub-PAT/password" }}@github"]
 	insteadOf = https{{ .chezmoi.pathListSeparator }}//github
