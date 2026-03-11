@@ -29,15 +29,6 @@ return {
         },
       },
       -- Global capabilities
-      capabilities = {
-        workspace = {
-          -- Snacks file rename capabilities
-          fileOperations = {
-            didRename = true,
-            willRename = true,
-          },
-        },
-      },
       servers = {
         -- Python LSP customizations
         pyright = {
@@ -52,7 +43,7 @@ return {
             },
           },
         },
-        -- TypeScript/JavaScript LSP customizations  
+        -- TypeScript/JavaScript LSP customizations
         vtsls = {
           settings = {
             typescript = {
