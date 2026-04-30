@@ -24,4 +24,4 @@ type = "archive"
 url = "https://github.com/meleantonio/ChernyCode/archive/main.tar.gz"
 exact = true
 refreshPeriod = "168h"
-include = [".cursor/skills/**/*", "cursor_personal_skills/**/*"]
+include = [".cursor/skills/**", "cursor_personal_skills/**"]
