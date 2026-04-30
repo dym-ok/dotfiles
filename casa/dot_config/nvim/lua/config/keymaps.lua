@@ -10,6 +10,8 @@ map("v", "p", '"_dP', { noremap = true, silent = true, desc = "Paste without ove
 map({ "n", "v" }, "d", '"_d', { desc = "Delete without saving to buffer" })
 map("n", "D", '"_D', { desc = "Delete line without saving to buffer" })
 map("n", "x", '"_x', { desc = "Delete character without saving to buffer" })
+map("n", "<leader>at", "<cmd>vsplit | terminal<CR>", { desc = "Open terminal in vertical split" })
+-- function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end
 
 return {
   keys = {
