@@ -221,7 +221,11 @@ return {
       {
         "<leader>cf",
         function()
-          require("conform").format({ async = true })
+          require("conform").format({ async = true }).setup({
+            formatters_by_ft = {
+              markdown = { "prettierd", "prettier", stop_after_first = true },
+            },
+          })
         end,
         mode = "",
         desc = "Format buffer with Conform",
@@ -238,7 +242,7 @@ return {
         javascriptreact = { "prettierd", "prettier", stop_after_first = true },
         typescriptreact = { "prettierd", "prettier", stop_after_first = true },
         json = { "prettierd", "prettier", stop_after_first = true },
-        markdown = { "prettierd", "prettier", stop_after_first = true },
+        markdown = { "markdownlint-cli2", "prettierd", "prettier", stop_after_first = true },
       },
       default_format_opts = {
         lsp_format = "fallback",
