@@ -7,16 +7,7 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- add gruvbox
-  { "ellisonleao/gruvbox.nvim" },
-
-  -- Configure LazyVim to load gruvbox
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "gruvbox",
-    },
-  },
+  -- single source of truth for the colorscheme
 
   -- change trouble config
   {
@@ -25,29 +16,16 @@ return {
     opts = { use_diagnostic_signs = true },
   },
 
-  -- disable trouble
-  { "folke/trouble.nvim", enabled = false },
-
-  -- change some telescope options and a keymap to browse plugin files
-  --
+  -- fzf-lua is the picker (enabled via the editor.fzf extra in lazyvim.json)
+  -- add a keymap to browse plugin files
   {
-    "nvim-telescope/telescope.nvim",
+    "ibhagwan/fzf-lua",
     keys = {
-      -- add a keymap to browse plugin files
       -- stylua: ignore
       {
         "<leader>fp",
-        function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
+        function() require("fzf-lua").files({ cwd = require("lazy.core.config").options.root }) end,
         desc = "Find Plugin File",
-      },
-    },
-    -- change some options
-    opts = {
-      defaults = {
-        layout_strategy = "horizontal",
-        layout_config = { prompt_position = "top" },
-        sorting_strategy = "ascending",
-        winblend = 0,
       },
     },
   },
@@ -97,17 +75,6 @@ return {
     event = "VeryLazy",
     opts = function(_, opts)
       table.insert(opts.sections.lualine_x, "😄")
-    end,
-  },
-
-  -- or you can return new options to override all the defaults
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function()
-      return {
-        --[[add your custom lualine config here]]
-      }
     end,
   },
 
